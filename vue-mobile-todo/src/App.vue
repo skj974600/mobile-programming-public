@@ -11,6 +11,7 @@
           width="40"
         />
       </div>
+      <v-spacer></v-spacer>
     </v-app-bar>
 
     <v-main>
@@ -58,7 +59,7 @@ export default {
 
     // 할 일 등록
     addTodo(todoItem) {
-      const { title, memo } = todoItem;
+      const { title, memo, index } = todoItem;
 
       let todoObj = {};
 
@@ -69,7 +70,7 @@ export default {
         todoObj.id = 1;
       }
 
-      todoObj = { ...todoObj, state: "todo", title: title || "", memo: memo || "" };
+      todoObj = { ...todoObj, state: "todo", title: title || "", memo: memo || "", index: index || ""};
 
       this.todoItems.push(todoObj);
       localStorage.setItem("todo", JSON.stringify(this.todoItems));
