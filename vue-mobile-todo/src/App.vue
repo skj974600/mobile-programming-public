@@ -11,13 +11,27 @@
           width="40"
         />
       </div>
-      <v-spacer></v-spacer>
+      <TodoSearch
+        class="search"
+        v-on:searchTodo="searchTodo"
+        v-on:removeSearched="removeSearched"
+        v-bind:searched="searchedItems"
+      />
     </v-app-bar>
 
     <v-main>
       <div class="main_wrapper">
-        <TodoHeader v-bind:propsdata="todoItems" />
+        <TodoHeader v-if="searching" v-bind:propsdata="searchedItems" />
+        <TodoHeader v-else v-bind:propsdata="todoItems" />
         <TodoList
+          v-if="searching"
+          v-bind:propsdata="searchedItems"
+          @finishTodo="finishTodo"
+          @updateTodo="updateTodo"
+          @removeTodo="removeTodo"
+        ></TodoList>
+        <TodoList
+          v-else
           v-bind:propsdata="todoItems"
           @finishTodo="finishTodo"
           @updateTodo="updateTodo"
@@ -35,6 +49,7 @@ import TodoFooter from "./components/TodoFooter.vue";
 import TodoHeader from "./components/TodoHeader.vue";
 import TodoList from "./components/TodoList.vue";
 import TodoInput from "./components/TodoInput.vue";
+import TodoSearch from "./components/TodoSearch.vue";
 
 export default {
   name: "App",
@@ -44,11 +59,14 @@ export default {
     TodoFooter,
     TodoHeader,
     TodoInput,
+    TodoSearch,
   },
 
   data() {
     return {
       todoItems: [],
+      searchedItems: [],
+      searching: false,
     };
   },
   methods: {
@@ -94,6 +112,25 @@ export default {
       this.todoItems[updatedTodoIndex] = { ...todo, state: "todo" };
       localStorage.setItem("todo", JSON.stringify(this.todoItems));
     },
+    
+    // 검색 기능
+    searchTodo(stat) {
+      this.searching = true;
+      this.searchedItems = this.todoItems.filter((todo) => {
+        for (let e of stat.split(" ")) {
+          if (todo.title.includes(e) || todo.memo.includes(e) || todo.index.includes(e)) {
+            return true;
+          }
+        }
+        return false;
+      });
+    },
+
+    // 검색기록 삭제
+    removeSearched() {
+      this.searching = false;
+      this.searchedItems = [];
+    },
 
     // 할 일 삭제
     removeTodo(id) {
@@ -125,7 +162,7 @@ html {
 body {
   height: 100%;
   text-align: center;
-  background-color: #f6f6f8;
+  background-color: #dbc1d4;
 }
 #app {
   height: 100%;
@@ -144,6 +181,9 @@ body {
   -webkit-box-shadow: 0px 0px 5px 0px rgba(181,181,181,1);
   -moz-box-shadow: 0px 0px 5px 0px rgba(181,181,181,1);
   box-shadow: 0px 0px 5px 0px rgba(181,181,181,1);
+}
+.search {
+  margin-left: auto;
 }
 </style>
 

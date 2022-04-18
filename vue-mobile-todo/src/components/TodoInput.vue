@@ -11,6 +11,7 @@
                 v-model="newTodoItem"
                 v-on:keypress.enter="addTodoTitle"
             ></v-text-field>
+            
             <!-- 제목 + 내용 입력할 수 있는 UI를 띄워주는 버튼: 입력값이 없을 때 보임 -->
             <v-btn
                 v-if="!newTodoItem"

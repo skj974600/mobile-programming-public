@@ -2,7 +2,7 @@
   <v-container>
     <transition-group class="pl-0" name="list" tag="ul">
       <!-- 상태가 todo인것만 보여줌 (v-show) -->
-      <v-card class="mb-2 " v-for="(todoItem) in propsdata" :key="todoItem.id" v-show="(todoItem.state === 'todo')">
+      <v-card shaped class="mb-2" v-for="(todoItem) in propsdata" :key="todoItem.id" v-show="(todoItem.state === 'todo')">
         <v-card-actions>
           <v-list-item class="list_item">
             <v-list-item-avatar @click="finishTodo(todoItem.id)">

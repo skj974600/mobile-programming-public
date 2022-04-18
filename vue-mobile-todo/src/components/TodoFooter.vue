@@ -24,12 +24,12 @@ export default {
   width: 8.5rem;
   height: 50px;
   line-height: 50px;
-  background-color: white;
+  background-color: #f1dcff;
   border-radius: 5px;
   margin: 0 auto;
 }
 .clearAllBtn {
-  color: #e20303;
+  color: #808080;
   display: block;
 }
 </style>

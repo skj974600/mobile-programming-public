@@ -2,7 +2,7 @@
 <v-container>
   <v-row justify="center">
     <h1>{{getTodoItemsLength() > 0 ? getTodoItemsLength() + "개의 할일이 남아있어요! " : "한가하시네요! "}}</h1>
-    <h1 class="date">{{"! (오늘은 "+timestamp+" 입니다.)" }}</h1>
+    <h1 class="date">{{"(오늘은 "+timestamp+" 입니다.)" }}</h1>
   </v-row>
 </v-container>
 </template>
