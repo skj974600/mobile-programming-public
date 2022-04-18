@@ -2,7 +2,7 @@
   <v-container>
     <transition-group class="pl-0" name="list" tag="ul">
       <!-- 상태가 todo인것만 보여줌 (v-show) -->
-      <v-card class="mb-2 " v-for="(todoItem) in propsdata" :key="todoItem.id" v-show="(todoItem.state === 'todo')">
+      <v-card shaped class="mb-2" v-for="(todoItem) in propsdata" :key="todoItem.id" v-show="(todoItem.state === 'todo')">
         <v-card-actions>
           <v-list-item class="list_item">
             <v-list-item-avatar @click="finishTodo(todoItem.id)">
@@ -11,6 +11,10 @@
 
             <v-list-item-content @click="showTodoDetail(todoItem.id)">
               <v-list-item-title v-text="todoItem.title"></v-list-item-title>
+            </v-list-item-content>
+
+            <v-list-item-content class="text-right">
+              <v-list-item-title v-text="todoItem.index"></v-list-item-title>
             </v-list-item-content>
 
             <v-list-item-action @click="removeTodo(todoItem.id)">
@@ -67,6 +71,18 @@
                         class="pa-4"
                     ></v-textarea>
                 </v-list-item>
+                <v-list-item>
+                    <v-textarea
+                        label="분류(index)"
+                        hide-details
+                        outlined
+                        :readonly="updateMode ? false : true"
+                        v-model="selectedTodoIndex"
+                        @click="openUpdateMode()"
+                        no-resize
+                        class="pa-4"
+                    ></v-textarea>
+                </v-list-item>
             </v-list>
             <v-bottom-navigation fixed>
                 <v-row no-gutters v-if="!updateMode">
@@ -112,6 +128,7 @@ export default {
       selectedTodo: null,  // 선택된 투두아이템 (전체) // 취소 눌렀을때 돌아가게 할려고 만들었음
       selectedTodoTitle: "", // 선택된 투두 아이템의 제목
       selectedTodoMemo: "",  // 선택된 투두 아이템의 메모
+      selectedTodoIndex: "", // 선택된 투두 아이템의 분류(index)
       showDialog: false,  // 상세보기 보여줄건지 말건지
       updateMode: false,  // 수정모드인지 아닌지
     }
@@ -133,6 +150,7 @@ export default {
       this.selectedTodo = selectedTodo;
       this.selectedTodoTitle = selectedTodo.title;
       this.selectedTodoMemo = selectedTodo.memo;
+      this.selectedTodoIndex = selectedTodo.index;
       this.showDialog = true;
     },
 
@@ -141,6 +159,7 @@ export default {
       this.selectedTodo = null;
       this.selectedTodoTitle = "";
       this.selectedTodoMemo = "";
+      this.selectedTodoIndex = "";
       this.showDialog = false;
       this.updateMode = false;
     },
@@ -171,16 +190,17 @@ export default {
 
     // 취소 버튼 클릭
     clickCancel() {
-      const { title, memo } = this.selectedTodo;
+      const { title, memo, index } = this.selectedTodo;
       this.selectedTodoTitle = title;
       this.selectedTodoMemo = memo;
+      this.selectedTodoIndex = index; 
       this.updateMode = false;
     },
 
     // 저장 버튼 클릭
     clickSave() {
-      this.$emit("updateTodo", { id: this.selectedTodo.id, title: this.selectedTodoTitle, memo: this.selectedTodoMemo });
-      this.selectedTodo = { ...this.selectedTodo, title: this.selectedTodoTitle, memo: this.selectedTodoMemo };
+      this.$emit("updateTodo", { id: this.selectedTodo.id, title: this.selectedTodoTitle, memo: this.selectedTodoMemo, index: this.selectedTodoIndex });
+      this.selectedTodo = { ...this.selectedTodo, title: this.selectedTodoTitle, memo: this.selectedTodoMemo, index: this.selectedTodoIndex };
       this.updateMode = false;
     }
   },
