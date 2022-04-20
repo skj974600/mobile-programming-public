@@ -31,16 +31,31 @@
           @removeTodo="removeTodo"
         ></TodoList>
         <TodoList
+          v-else-if="grouping"
+          v-bind:propsdata="groupedItems"
+          v-bind:grouping="grouping"
+          @finishTodo="finishTodo"
+          @updateTodo="updateTodo"
+          @removeTodo="removeTodo"
+        ></TodoList>
+        <TodoList
           v-else
           v-bind:propsdata="todoItems"
           @finishTodo="finishTodo"
           @updateTodo="updateTodo"
           @removeTodo="removeTodo"
         ></TodoList>
-        <TodoFooter v-if="getTodoItemsLength() > 0" v-on:removeAll="removeAll" />
+        <TodoFooter
+          v-if="getTodoItemsLength() > 0"
+          v-on:removeAll="removeAll"
+        />
       </div>
     </v-main>
-    <TodoInput v-on:addTodo="addTodo"></TodoInput>
+    <TodoInput
+      v-on:addTodo="addTodo"
+      v-on:showIndexGroup="showIndexGroup"
+      v-bind:grouping="grouping"
+    ></TodoInput>
   </v-app>
 </template>
 
@@ -66,7 +81,10 @@ export default {
     return {
       todoItems: [],
       searchedItems: [],
+      groupedItems: {},
+      propItems: [],
       searching: false,
+      grouping: false,
     };
   },
   methods: {
@@ -77,18 +95,28 @@ export default {
 
     // 할 일 등록
     addTodo(todoItem) {
+      this.clearOption();
       const { title, memo, index } = todoItem;
 
       let todoObj = {};
 
-      if (localStorage.getItem("todo") && JSON.parse(localStorage.getItem("todo")).length > 0) {
+      if (
+        localStorage.getItem("todo") &&
+        JSON.parse(localStorage.getItem("todo")).length > 0
+      ) {
         const localTodo = JSON.parse(localStorage.getItem("todo"));
         todoObj.id = localTodo[localTodo.length - 1].id + 1;
       } else {
         todoObj.id = 1;
       }
 
-      todoObj = { ...todoObj, state: "todo", title: title || "", memo: memo || "", index: index || ""};
+      todoObj = {
+        ...todoObj,
+        state: "todo",
+        title: title || "",
+        memo: memo || "",
+        index: index || "",
+      };
 
       this.todoItems.push(todoObj);
       localStorage.setItem("todo", JSON.stringify(this.todoItems));
@@ -108,17 +136,23 @@ export default {
 
     // 할 일 수정
     updateTodo(todo) {
-      const updatedTodoIndex = this.todoItems.findIndex((item) => item.id === todo.id);
+      const updatedTodoIndex = this.todoItems.findIndex(
+        (item) => item.id === todo.id
+      );
       this.todoItems[updatedTodoIndex] = { ...todo, state: "todo" };
       localStorage.setItem("todo", JSON.stringify(this.todoItems));
     },
-    
+
     // 검색 기능
     searchTodo(stat) {
       this.searching = true;
       this.searchedItems = this.todoItems.filter((todo) => {
         for (let e of stat.split(" ")) {
-          if (todo.title.includes(e) || todo.memo.includes(e) || todo.index.includes(e)) {
+          if (
+            (todo.title && todo.title.includes(e)) ||
+            (todo.memo && todo.memo.includes(e)) ||
+            (todo.index && todo.index.includes(e))
+          ) {
             return true;
           }
         }
@@ -142,6 +176,31 @@ export default {
     removeAll() {
       localStorage.clear();
       this.todoItems = [];
+    },
+
+    showIndexGroup(grouping) {
+      console.log(grouping);
+      this.grouping = grouping;
+      this.removeSearched();
+      if (!grouping) {
+        this.removeGrouped();
+        return;
+      }
+      this.todoItems.filter((todo) => {
+        if (!(todo.index in this.groupedItems)) {
+          this.groupedItems[todo.index] = [];
+        }
+        this.groupedItems[todo.index].push(todo);
+      });
+      console.log(this.groupedItems);
+    },
+    removeGrouped() {
+      this.grouping = false;
+      this.groupedItems = {};
+    },
+    clearOption() {
+      this.removeSearched();
+      this.removeGrouped();
     },
   },
 
@@ -170,7 +229,7 @@ body {
 .v-main {
   height: 100%;
   padding: 0 !important;
-  margin: 56px 0px 88px 0px !important; 
+  margin: 56px 0px 88px 0px !important;
 }
 .main_wrapper {
   height: calc(100% - 56px - 88px);
@@ -178,9 +237,9 @@ body {
   overflow-x: hidden;
 }
 .shadow {
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(181,181,181,1);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(181,181,181,1);
-  box-shadow: 0px 0px 5px 0px rgba(181,181,181,1);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 1);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 1);
+  box-shadow: 0px 0px 5px 0px rgba(181, 181, 181, 1);
 }
 .search {
   margin-left: auto;
