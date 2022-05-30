@@ -82,7 +82,7 @@ export default {
           // Signed in
           console.log(userCredential.user);
           this.name = userCredential.user.email;
-          this.$router.push({ path: "todo" });
+          this.$router.push({ path: "main" });
           // ...
         })
         .catch((error) => {
@@ -96,7 +96,7 @@ export default {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         console.log(user.email);
-        this.$router.push({ path: "todo" });
+        this.$router.push({ path: "main" });
         // ...
       } else {
         console.log("not logged in");
