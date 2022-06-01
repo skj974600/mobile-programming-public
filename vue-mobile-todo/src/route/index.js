@@ -15,8 +15,8 @@ const router = new VueRouter({
         { path: '/', component: TodoLogin },
         { path: '/main', component: MainPage },
         { path: '/addreport', component: AddReport},
-        { path: 'reportlist', component: ReportList},
-        { path: 'recommandlist', component: RecommandList},
+        { path: '/reportlist', component: ReportList},
+        { path: '/recommandlist', component: RecommandList},
         { path: '*', component: TodoLogin }
     ]
 })

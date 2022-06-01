@@ -20,17 +20,38 @@
     </v-app-bar>
 
     <v-main>
-        <v-card>
-            <v-btn class="pink white--text" block elevation="15" rounded @click="move_recommand_page">추천 도서</v-btn>
-        </v-card>
-        <v-spacer></v-spacer>
-        <v-card>
-            <v-btn class="pink white--text" block elevation="15" rounded @click="move_reportlist_page">독후감 목록</v-btn>
-        </v-card>
-        <v-spacer></v-spacer>
-        <v-card>
-            <v-btn class="pink white--text" block elevation="15" rounded @click="move_add_page">독후감 추가</v-btn>
-        </v-card>
+      <v-layout>
+        <v-flex xs12 sm6 offset-sm3>
+          <v-card>
+            <v-card-title>추천도서</v-card-title>
+            <v-card-subtitle>독후감을 바탕으로 도서를 추천해줍니다(대기시간 걸림)</v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn class="blue white--text" block elevation="15" rounded @click="move_recommand_page">추천 도서</v-btn>
+            </v-card-actions>
+
+          </v-card>
+          <v-card>
+            <v-card-title>독후감 기록</v-card-title>
+            <v-card-subtitle>본인이 작성한 독후감 기록을 볼 수 있습니다</v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn class="blue white--text" block elevation="15" rounded @click="move_reportlist_page">독후감 기록</v-btn>
+            </v-card-actions>
+
+          </v-card>
+          <v-spacer></v-spacer>
+          <v-card>
+            <v-card-title>독후감 작성</v-card-title>
+            <v-card-subtitle>독후감을 작성합니다</v-card-subtitle>
+
+            <v-card-actions>
+              <v-btn class="blue white--text" block elevation="15" rounded @click="move_add_page">독후감 작성</v-btn>
+            </v-card-actions>
+
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-main>
   </v-app>
 </template>
@@ -47,7 +68,7 @@ export default {
   },
   methods: {
     move_recommand_page() {
-        this.$router.push({ path:"recommand" });
+        this.$router.push({ path:"recommandlist" });
     },
     move_reportlist_page() {
         this.$router.push({ path:"reportlist" });
