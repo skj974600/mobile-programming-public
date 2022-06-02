@@ -4,8 +4,13 @@
 기존 TodoContents, TodoFooter, TodoHeader, TodoInput, TodoList, TodoLogin, TodoSearch 컴포턴트 구성에서  
 
 MainPage, AddReport, RecommandList, ReportList, TodoLogin의 구성으로 바꿈
+TodoLogin(firebase 호스팅 및 authentication 이용) -> MainPage(라우팅으로 page 이동, 메인 페이지) -> AddReport (독후감 작성 페이지, 서버에 전송), ReportList (유저가 작성했던 모든 독후감 요청), RecommandList(유저가 작성했던 독후감을 바탕으로 백엔드 서버 api가 텍스트 마이닝 후 클라이언트로 전송)  
 
-# backend
+# backend API
+Cloud Platform : vultr, Language : nodejs, Framework : express, Databse : mongoDB으로 구성  
+http method를 이용한 CRUD  
+파이썬으로 작성된 텍스트 마이닝 모델 코드파일을 js에 import  
+클라이언트 요청에 맞추어 response (독후감 저장, 독후감 기록 송출, 추천 도서 목록 송출)
 
 
 # deploy 과정
