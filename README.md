@@ -1,4 +1,9 @@
-# mobile-programming-public
+# mobile-programming-seoultech  
+## book report progressive web application. 
+
+We implemented frontend on firebase with vue js and backend on private server with node js express and mongodb.
+You can add, receive your book_report, also get recommended book list extracted by text mining (simple tf-idf). 
+
 
 # frontend
 기존 TodoContents, TodoFooter, TodoHeader, TodoInput, TodoList, TodoLogin, TodoSearch 컴포턴트 구성에서  
